@@ -17,7 +17,8 @@
     "assets",
     "CHANGELOG.md",
     "README.md",
-    "LICENSE"
+    "LICENSE",
+    "screenshots.json"
   ],
   "license": "MIT",
   "repository": {
