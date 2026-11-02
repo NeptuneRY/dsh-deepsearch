@@ -1,0 +1,54 @@
+{
+  "name": "dsh-deepsearch",
+  "version": "1.1.36",
+  "description": "Multi-round deep research for DeepSeek Harness: the same session keeps drilling into a topic round after round and writes a cited report in the right sidebar.",
+  "type": "module",
+  "main": "lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./client": "./lib/client.js",
+    "./icon": "./icon.svg"
+  },
+  "files": [
+    "lib",
+    "methods.md",
+    "cordis.patch.yml",
+    "icon.svg",
+    "assets/icon-180.png",
+    "README.md",
+    "LICENSE"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NeptuneRY/dsh-deepsearch.git"
+  },
+  "homepage": "https://github.com/NeptuneRY/dsh-deepsearch#readme",
+  "bugs": {
+    "url": "https://github.com/NeptuneRY/dsh-deepsearch/issues"
+  },
+  "keywords": [
+    "dsh-plugin",
+    "dsh",
+    "deep-research",
+    "research-agent",
+    "search"
+  ],
+  "engines": {
+    "node": ">=22",
+    "dsh": ">=0.2.1-rc.1 <0.3.0"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "inject": [
+        "@deepseek-ai/dsh-client-ui-slots",
+        "@deepseek-ai/dsh-client-locale"
+      ]
+    },
+    "manifestVersion": 1
+  }
+}

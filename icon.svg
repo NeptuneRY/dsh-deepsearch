@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Search with a deepsearch subagent">
+  <rect x="5" y="7" width="54" height="50" rx="11" fill="#10202e"/>
+  <rect x="5" y="7" width="54" height="50" rx="11" fill="none" stroke="#4aa3df" stroke-width="2.5"/>
+  <circle cx="27" cy="28" r="11" fill="none" stroke="#8fd0ff" stroke-width="3.5"/>
+  <path d="M35 36l11 11" stroke="#8fd0ff" stroke-width="4" stroke-linecap="round"/>
+  <path d="M22 24h10M22 29h7" stroke="#4aa3df" stroke-width="2.4" stroke-linecap="round"/>
+  <circle cx="47" cy="16" r="3" fill="#4aa3df"/>
+</svg>
