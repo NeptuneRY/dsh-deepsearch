@@ -47,17 +47,19 @@ It never replaces a host tool: `web_search` / `web_fetch` stay native, and the m
 | Output | one answer | one Markdown report per round, numbered in one topic folder |
 | Best for | facts, links, definitions | research that needs depth and cross-checking |
 
-### Two rounds, one report rewritten
+### One new report per round, narrowing as it goes
 
 Topic: *"How should a DSH plugin README be written?"* — two rounds:
 
 ![Round 1: laying out how three popular plugins structure their READMEs](assets/round-1.png)
 
-![Round 2: no re-comparison — collapsed into "a reader model + the first 2500 characters"](assets/round-2.png)
+![Round 2: a new report built on round 1, narrowing the conclusion to "a reader model + the first 2500 characters"](assets/round-2.png)
 
-Round 1 compares three samples side by side: size, what sits above the fold, where the install section lands, how the changelog is handled. Round 2 does not redo that table: it collapses the findings into "the first 2500 characters decide how the directory describes you" and reorders the sections accordingly.
+Round 1 compares three samples side by side: size, what sits above the fold, where the install section lands, how the changelog is handled.
 
-What round 2 inherits is round 1's **judgement**, not round 1's file — that is the difference between multi-round and asking twice.
+Round 2 does not redo that table and does not overwrite it: it adds a **new** report on top of the previous round, answering only what the table left open — "the first 2500 characters decide how the directory describes you" — and reorders the sections accordingly. Both reports sit in the same topic folder, numbered `01-`, `02-`; read in order, the second complements the first rather than replacing it.
+
+That is the difference from asking twice: round 2 inherits round 1's judgement and moves forward.
 
 ## Two entry points
 
@@ -97,13 +99,13 @@ dsh plugin remove dsh-deepsearch     # uninstall
 
 You are done when a **Deep search** tab shows up in the right sidebar. If it does not, check two things first: the host was restarted, and you installed into the profile you are actually running.
 
-The sidebar tab is registered through the `betterSidebar` service provided by **Better Sidebar** (`dsh-better-sidebar`); without it the plugin falls back to the host's built-in sidebar slot and works the same.
+The panel is a tab of **Better Sidebar** (`dsh-better-sidebar`); the plugin also keeps a permanent search icon in the host's **left sidebar**, and both open the same panel. Without Better Sidebar only the left-sidebar entry remains.
 
 ## Compatibility
 
 The current version requires DSH **0.2.1-rc.1** or newer (declared in `engines.dsh`, checked by the host before installing). Earlier 0.2.x previews lack `ctx.tools.restrict` and `sessionController`, so the plugin loads but never activates.
 
-The sidebar panel relies on **Better Sidebar** (`dsh-better-sidebar`); the host's built-in sidebar slot is the fallback, with the same behaviour.
+The sidebar tab needs **Better Sidebar** (`dsh-better-sidebar`). With it installed the left-sidebar icon stays as well — a second entry point, not a fallback.
 
 ## Quick start
 
@@ -170,7 +172,7 @@ Numeric fields carry `min`/`max` and are clamped server-side; the settings card 
 
 ## What the model sees
 
-- **Tool description**: `deepsearch`'s `description` is the only trigger text, roughly 300 characters covering when to use it, when not to, and the single-round rule inside the workspace.
+- **Tool description**: `deepsearch`'s `description` is the only trigger the model sees — about 330 characters (roughly 250-300 tokens on Chinese text), covering when to use it, when not to (one fact or a few links is not worth it), that it should not spawn more retrieval sub-agents afterwards, and that it runs a single round by default inside the workspace.
 - **Context**: results return a `deepsearchSummaryChars` summary (4000 characters by default); the full report is on disk and can be read on demand.
 - **Compression**: deep-search sessions do not get the host's `compress` tool by default, so a long run is not folded mid-flight; enable it in settings to hand control back to the host policy.
 - **KV cache**: every round changes the request prefix, so cache hit rate drops as rounds accumulate — the inherent cost of multi-round.
