@@ -5,6 +5,10 @@
 </p>
 
 <p align="center">
+  <b>中文</b> · <a href="README.en.md">English</a>
+</p>
+
+<p align="center">
   <b>多轮深度搜索</b>：同一个会话里一轮接一轮往下挖，每一轮都从上一轮停下的地方继续。
 </p>
 
@@ -83,38 +87,24 @@
 
 ## 安装
 
-```bash
-# 市场里搜 dsh-deepsearch，或直接：
-dsh plugin add dsh-deepsearch
-```
+从市场安装：打开 DSH 的插件市场，搜 `dsh-deepsearch`，点安装，然后重启宿主——新 bundle 只在启动时组装。
 
-| 你的宿主 | 装什么 |
-| --- | --- |
-| `0.2.1-rc.1` 及以后 `0.2.x` | 当前版本 |
-| 更早的 0.2.x 预览版 | 先升级宿主；插件用了 `ctx.tools.restrict` 与 `sessionController`，旧版没有 |
-| `0.3.x` | 暂不支持，`engines.dsh` 会拦住 |
-
-三点容易踩：
-
-- **装到哪个 profile**：桌面端用 `--profile desktop`（默认就是桌面 profile 时可以省略）。`web` / `desktop` / `headless` 各装各的，装错 profile 面板里不会出现。
-- **必须有 `dsh.bundle`**：本包的 `package.json` 声明了它；如果你的宿主版本太旧、把插件只当普通依赖装，插件永远不会被加载。
-- **装完要重启宿主**：bundle 只在启动时组装，`dsh plugin add` 之后不重启看不到「深度搜索」页签。
-
-验证与卸载：
+从命令行安装：
 
 ```bash
-dsh plugin --profile desktop why dsh-deepsearch    # 能列出依赖树即已装
-dsh plugin --profile desktop remove dsh-deepsearch
+dsh plugin add dsh-deepsearch        # 默认装到桌面 profile；别的 profile 加 --profile <name>
+dsh plugin remove dsh-deepsearch     # 卸载
 ```
 
-本地开发用 link：
+装完右侧栏出现「深度搜索」页签就算成功。没看到时先确认两件事：重启过宿主，装的是你现在正在用的那个 profile。
 
-```bash
-cd ~/.dsh/profiles/desktop
-pnpm add "link:/path/to/dsh-deepsearch"
-# 再把 "dsh-deepsearch" 加进 profile package.json 的 dsh.profile.bundles
-# 重启应用（新 bundle 只在启动时组装）
-```
+右侧栏页签是通过 **Better Sidebar**（`dsh-better-sidebar`）提供的 `betterSidebar` 服务注册的；没装它时退回宿主自带的侧栏插槽，功能一样。
+
+## 兼容性
+
+当前版本要求 DSH **0.2.1-rc.1** 或更新（写在 `package.json` 的 `engines.dsh` 里，装的时候宿主会先查一遍）。更早的 0.2.x 预览版没有 `ctx.tools.restrict` 与 `sessionController`，装上也加载不起来。
+
+右侧栏面板依赖 **Better Sidebar**（`dsh-better-sidebar`）；宿主原生侧栏插槽是它的退路，两边的功能一致。
 
 ## 快速开始
 
