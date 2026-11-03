@@ -22,8 +22,6 @@
   <a href="https://github.com/NeptuneRY/dsh-deepsearch/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/NeptuneRY/dsh-deepsearch"></a>
 </p>
 
-`dsh plugin add dsh-deepsearch` · requires DSH `0.2.1-rc.1+` · adds a **Deep search** tab to the right sidebar
-
 ## Why use it
 
 One agent search turns a question into one answer. Deep search puts the same topic into **one session** and runs several rounds:
@@ -34,15 +32,15 @@ One agent search turns a question into one answer. Deep search puts the same top
 
 A finished multi-round report is worth far more than a single agent search: it reads like someone spent days on the topic, not like paragraphs stitched from a few pages.
 
-It goes well beyond "research": anything that needs a pile of sources, split into sub-questions, ending in one cited conclusion — mapping the frontier of a field, comparing candidates before buying something, finding a good place to eat nearby, writing this very README.
+It goes well beyond "research": anything that needs a pile of sources, split into sub-questions, ending in one cited conclusion — industry and company research, due diligence, weighing a few options against each other, comparing specs and reviews before buying something, evaluating a technology path, policy and people background, mapping the frontier of a field, finding a good place to eat nearby, or writing this very README.
 
 For one fact, a couple of links or a definition, the built-in `web_search` is faster; this plugin is for questions whose answer is not on the first page.
 
 It never replaces a host tool: `web_search` / `web_fetch` stay native, and the model decides whether retrieval is worth delegating to sub-agents.
 
-### How it differs from a single agent search
+### How it differs from agent search
 
-| | Single agent search | Deep search |
+| | Agent search | Deep search |
 | --- | --- | --- |
 | Context | starts from scratch each time | one session, each round inherits the last |
 | Splitting | decided once | re-planned every round; open items become next round's focus |
