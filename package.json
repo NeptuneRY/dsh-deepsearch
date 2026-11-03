@@ -1,6 +1,6 @@
 {
   "name": "dsh-deepsearch",
-  "version": "1.1.42",
+  "version": "1.1.43",
   "description": "Multi-round deep research for DeepSeek Harness: the same session keeps drilling into a topic round after round and writes a cited report in the right sidebar.",
   "type": "module",
   "main": "lib/index.js",
