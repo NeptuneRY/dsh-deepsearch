@@ -743,4 +743,42 @@ assert.equal(createdSessions[plainBefore].agentPreset, undefined, 'switching ptc
   assert.equal(shown.config.sidebarEntry, true, 'turning it back on restores the entry')
 }
 
+// -- a deepsearch run is visible (and stoppable) from the first second -------
+{
+  const hangingPrompt = services.sessionController.prompt
+  services.sessionController.prompt = async (request, signal) => {
+    sessionPrompts.push({ ...request })
+    await new Promise((resolve, reject) => {
+      if (signal && typeof signal.addEventListener === 'function') {
+        if (signal.aborted) return reject(new Error('aborted'))
+        signal.addEventListener('abort', () => reject(new Error('aborted')), { once: true })
+        return undefined
+      }
+      return undefined
+    })
+  }
+  const pending = call('POST', '/panel/deepsearch', { query: '正在跑的深度搜索', rounds: 2 })
+  await new Promise((resolve) => setTimeout(resolve, 60))
+  const running = (await call('GET', '/state')).json.history[0]
+  assert.equal(running.query, '正在跑的深度搜索')
+  assert.equal(running.status, 'running', 'the card exists while the run is still going')
+  assert.equal(running.reportPath, '', 'no report yet')
+  const stopped = await call('POST', '/run/stop', { id: running.id })
+  assert.equal(stopped.status, 200)
+  assert.equal(stopped.json.ok, true)
+  assert.equal(stopped.json.entry.status, 'aborted')
+  const after = await pending
+  assert.equal(after.json.aborted, true, 'the waiting request unwinds as aborted')
+  const gone = await call('POST', '/run/stop', { id: running.id })
+  assert.equal(gone.status, 404, 'a stopped run cannot be stopped twice')
+  const listed = (await call('GET', '/state')).json.history[0]
+  assert.equal(listed.status, 'aborted')
+  services.sessionController.prompt = hangingPrompt
+}
+
+process.on('unhandledRejection', (error) => {
+  console.error('unhandled rejection escaped the plugin:', error)
+  process.exit(1)
+})
+
 console.log('smoke ok')
