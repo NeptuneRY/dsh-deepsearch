@@ -76,6 +76,12 @@
 
 结果卡与历史卡片都能把报告「保存到桌面」：单份直接放桌面，多轮放进以报告目录命名的子文件夹，重名自动加序号。
 
+### 调查方法可以自己改
+
+「深度搜索」页底部有一张「调查方法」卡，正文就是包内的 `methods.md`：直接在上面改、点保存就生效，下一次深度搜索注入的是你改过的版本。想整套换成自己的规矩也一样——把正文换成你自己的判据、引用要求和停止条件；卡头的开关关掉后完全不注入。
+
+![调查方法：在面板里直接编辑并保存，下一次搜索就按这份方法走](assets/methods.png)
+
 ### `deepsearch` 工具
 
 主会话里按需调用，跑的是与面板完全同一条链路。
@@ -136,6 +142,7 @@ dsh plugin remove dsh-deepsearch     # 卸载
 | `searchReasoningEffort` | `low` | Agent 搜索配置卡里的思考强度：`off` / `low` / `high` / `max`；在创建会话后应用 |
 | `historyLimit` | `20` | 面板保留的历史条数 |
 | `dataRoot` | `~/.dsh-deepsearch` | 配置、历史、搜索工作区的位置 |
+| `sidebarEntry` | `true` | 在宿主左侧栏显示「深度搜索」入口；关掉后只剩 Better Sidebar 页签，面板与工具不受影响 |
 | `reportDir` | `''` | 报告目录；留空 = `<dataRoot>/reports`，填绝对路径则写到那里 |
 | `deepsearchTimeoutSec` | `1200` | 一次深度搜索的总超时（秒） |
 | `deepsearchReasoningEffort` | `low` | 深度搜索页的思考强度：`off` / `low` / `high` / `max`；在创建会话后应用 |
@@ -159,7 +166,7 @@ dsh plugin remove dsh-deepsearch     # 卸载
 面板里的位置：
 
 - **Agent 搜索页**：`maxToolCalls`、`panelAgentTimeoutSec`。
-- **深度搜索页**：「深度搜索设置」卡 —— `reportDir`、轮数、思考强度、报告最大字符、并行子代理、子代理简报字数、回传摘要字数、检索调用上限、超时，然后是 PTC 模式、允许压缩上下文，最后是两个工具开关（`deepsearchEnabled`、`deepsearchWorkspaceToolEnabled`）；工作区开关打开时多一行「限制解除」`deepsearchWorkspaceUnlimited`。另有「调查方法」卡与 `referencePaths` / `referenceEnabled`。
+- **深度搜索页**：「深度搜索设置」卡 —— `reportDir`、轮数、思考强度、报告最大字符、并行子代理、子代理简报字数、回传摘要字数、检索调用上限、超时，然后是 PTC 模式、允许压缩上下文，最后是两个工具开关（`deepsearchEnabled`、`deepsearchWorkspaceToolEnabled`）；工作区开关打开时多一行「限制解除」`deepsearchWorkspaceUnlimited`。另有「调查方法」卡与 `referencePaths` / `referenceEnabled`。「配置」页的「左侧栏入口」（`sidebarEntry`）控制左侧栏那个常驻图标：关掉后只剩 Better Sidebar 页签，面板、历史与 `deepsearch` 工具都不受影响。
 - **配置页**：`workspaceId`、`historyLimit`、`dataRoot`、`noTimeout`、`debug` 与诊断。
 
 数字项在配置里带 `min`/`max`，服务端按字段夹取；设置卡只提交改动过的那几个键。
