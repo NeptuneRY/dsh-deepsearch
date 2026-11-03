@@ -76,6 +76,12 @@ The **Deep search** tab in the right sidebar, four pages:
 
 Result cards and history cards can save a report to the desktop: one file straight to the desktop, multi-round reports into a folder named after the topic, with `-2` suffixes when names collide.
 
+### The method is yours to edit
+
+The **Method notes** card at the bottom of the Deep search page holds the text of `methods.md`: edit it inline and save, and the next deep search injects your version. You can also replace it with your own rules — your criteria, citation rules and stopping conditions. Turn the card switch off and nothing is injected at all.
+
+![Method notes: edit inline in the panel, and the next search follows your version](assets/methods.png)
+
 ### The `deepsearch` tool
 
 Callable from any main session; it uses exactly the same pipeline as the panel.
@@ -97,7 +103,7 @@ dsh plugin remove dsh-deepsearch     # uninstall
 
 You are done when a **Deep search** tab shows up in the right sidebar. If it does not, check two things first: the host was restarted, and you installed into the profile you are actually running.
 
-The panel is a tab of **Better Sidebar** (`dsh-better-sidebar`); the plugin also keeps a permanent search icon in the host's **left sidebar**, and both open the same panel. Without Better Sidebar only the left-sidebar entry remains.
+The panel is a tab of **Better Sidebar** (`dsh-better-sidebar`); the plugin also keeps a permanent search icon in the host's **left sidebar**, and both open the same panel. Without Better Sidebar only the left-sidebar entry remains. That icon can be hidden from **Config → Left sidebar entry** (`sidebarEntry`); the tab, history and the `deepsearch` tool keep working.
 
 ## Compatibility
 
@@ -136,6 +142,7 @@ The data directory defaults to `~/.dsh-deepsearch` (`%USERPROFILE%\.dsh-deepsear
 | `searchReasoningEffort` | `low` | Reasoning effort for Agent search: `off` / `low` / `high` / `max`; applied after the session is created |
 | `historyLimit` | `20` | How many history entries the panel keeps |
 | `dataRoot` | `~/.dsh-deepsearch` | Where config, history and the search workspace live |
+| `sidebarEntry` | `true` | Show the Deep search entry in the host left sidebar; off leaves only the Better Sidebar tab |
 | `reportDir` | `''` | Report folder; empty means `<dataRoot>/reports`, an absolute path writes there |
 | `deepsearchTimeoutSec` | `1200` | Total timeout for one deep search (seconds) |
 | `deepsearchReasoningEffort` | `low` | Reasoning effort on the deep search page: `off` / `low` / `high` / `max` |
