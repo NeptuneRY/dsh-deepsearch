@@ -34,7 +34,9 @@ One agent search turns a question into one answer. Deep search puts the same top
 
 A finished multi-round report is worth far more than a single agent search: it reads like someone spent days on the topic, not like paragraphs stitched from a few pages.
 
-It is not investment-only: industry and company research, due diligence, option comparison, product selection, technical evaluation — anything complex where the answer is not on the first page. For one fact, a couple of links or a definition, the built-in `web_search` is faster; this plugin is for questions worth three days.
+It goes well beyond "research": anything that needs a pile of sources, split into sub-questions, ending in one cited conclusion — mapping the frontier of a field, comparing candidates before buying something, finding a good place to eat nearby, writing this very README.
+
+For one fact, a couple of links or a definition, the built-in `web_search` is faster; this plugin is for questions whose answer is not on the first page.
 
 It never replaces a host tool: `web_search` / `web_fetch` stay native, and the model decides whether retrieval is worth delegating to sub-agents.
 
@@ -73,8 +75,6 @@ The **Deep search** tab in the right sidebar, four pages:
 | **Agent search** | Enter a question in natural language; opens a session in the "Deep search" workspace and syncs the answer back. The session stays in the sidebar for follow-ups |
 | **History** | Filter by All / Agent search / Deep search; click a card to expand, and "search one more round" continues the original session |
 | **Config** | General options, deep search parameters, method notes |
-
-![Deep search panel](assets/panel.png)
 
 Result cards and history cards can save a report to the desktop: one file straight to the desktop, multi-round reports into a folder named after the topic, with `-2` suffixes when names collide.
 
