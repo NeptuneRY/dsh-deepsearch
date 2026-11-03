@@ -730,4 +730,17 @@ assert.equal(createdSessions[plainBefore].agentPreset, undefined, 'switching ptc
   assert.ok(both.includes('派了子代理就等它们全部返回'), 'subagents keep the wait instruction')
 }
 
+// The sidebar entry is optional and lives in the plugin panel config.
+{
+  const before = (await call('GET', '/state')).json
+  assert.ok(before.configFields.some((field) => field.key === 'sidebarEntry'), 'sidebar entry switch is configurable')
+  assert.equal(before.config.sidebarEntry, true, 'the sidebar entry shows by default')
+  await call('POST', '/config', { values: { sidebarEntry: false } })
+  const hidden = (await call('GET', '/state')).json
+  assert.equal(hidden.config.sidebarEntry, false, 'the sidebar entry can be turned off')
+  await call('POST', '/config', { values: { sidebarEntry: true } })
+  const shown = (await call('GET', '/state')).json
+  assert.equal(shown.config.sidebarEntry, true, 'turning it back on restores the entry')
+}
+
 console.log('smoke ok')
