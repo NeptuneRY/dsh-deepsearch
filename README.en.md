@@ -24,11 +24,20 @@
 
 ## Why use it
 
-One agent search turns a question into one answer. Deep search puts the same topic into **one session** and runs several rounds:
+Deep search is not "agent search, run several times". It changes the shape of the work: the parent session splits the topic, hands out the pieces, and merges what comes back, so retrieval runs in parallel.
 
-- round 1 breaks the topic into sub-questions and nails down the facts;
-- every later round inherits the whole context, works out what is still open, and digs there;
-- leads that surfaced in a round get carried into the next one — that is where angles you would never have asked for come from.
+- **Split**: the parent turns the topic into non-overlapping sub-questions;
+- **Fan out**: each sub-question goes to its own **sub-agent** in parallel (3 by default, up to 8). They cannot see each other; each one searches, opens the primary source, and cross-checks;
+- **Dig**: when a round ends, the parent works out what is still open — last round's leftovers become this round's focus, in the same session;
+- **Merge**: every round writes one cited report into the same topic folder, read in filename order.
+
+Retrieval itself goes through the host's `web_search` / `web_fetch`, i.e. DeepSeek's search API. The plugin never takes them over; it only decides what to look up, who looks it up, and when the evidence is enough.
+
+### One round already beats one agent search
+
+A single agent search is one context and one serial chain: split a few questions, look them up one after another, wrap up as you go — roughly the depth and breadth of **one sub-agent**.
+
+The first deep-search round is parallel already: N sub-questions become N sub-agents searching at once, none of them blocking the others, each free to go all the way down; the parent then merges them into one cross-checked report. So even a single round covers more ground, and verifies it better, than one agent search; extra rounds keep digging from there instead of repeating the same work.
 
 A finished multi-round report is worth far more than a single agent search: it reads like someone spent days on the topic, not like paragraphs stitched from a few pages.
 
