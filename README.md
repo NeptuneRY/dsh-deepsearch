@@ -150,21 +150,22 @@ dsh plugin remove dsh-deepsearch     # 卸载
 | --- | --- | --- |
 | `workspaceId` | `''` | 面板会话所在的工作区 id；留空自动用「深度搜索」工作区 |
 | `maxToolCalls` | `8` | 面板 Agent 搜索会话的 `web_search` / `web_fetch` 上限（只写在提示词里） |
-| `panelAgentTimeoutSec` | `180` | 面板 Agent 搜索的超时（秒） |
+| `panelAgentTimeoutSec` | `360` | 面板 Agent 搜索的超时（秒） |
 | `searchReasoningEffort` | `low` | Agent 搜索配置卡里的思考强度：`off` / `low` / `high` / `max`；在创建会话后应用 |
-| `historyLimit` | `20` | 面板保留的历史条数 |
+| `historyLimit` | `50` | 面板保留的历史条数 |
 | `dataRoot` | `~/.dsh-deepsearch` | 配置、历史、搜索工作区的位置 |
 | `sidebarEntry` | `true` | 在宿主左侧栏显示「深度搜索」入口；关掉后只剩 Better Sidebar 页签，面板与工具不受影响 |
 | `reportDir` | `''` | 报告目录；留空 = `<dataRoot>/reports`，填绝对路径则写到那里 |
-| `deepsearchTimeoutSec` | `1200` | 一次深度搜索的总超时（秒） |
-| `deepsearchReasoningEffort` | `low` | 深度搜索页的思考强度：`off` / `low` / `high` / `max`；在创建会话后应用 |
-| `deepsearchToolCalls` | `24` | 一次深度搜索允许的检索/抓取工具调用上限 |
+| `deepsearchTimeoutSec` | `1800` | 一次深度搜索的总超时（秒） |
+| `deepsearchReasoningEffort` | `high` | 深度搜索页的思考强度：`off` / `low` / `high` / `max`；在创建会话后应用 |
+| `deepsearchToolCalls` | `24` | 主 agent 在收到子代理简报后，用来核对与补充关键信息的工具调用上限（只写在提示词里）；子代理自己的调用不占这个额度 |
 | `deepsearchMaxChars` | `20000` | 报告正文上限（超出截断并附提示） |
-| `deepsearchSummaryChars` | `4000` | `deepsearch` 工具回给 agent 的正文上限；完整报告不受影响 |
-| `noTimeout` | `false` | 不限时间：Agent 搜索、深度搜索和 `deepsearch` 工具都不再设超时；卡住时只能重载插件 |
-| `deepsearchSubagents` | `3` | 深度搜索最多派几个子代理并行查（0 = 不派，自己查） |
-| `deepsearchBriefWords` | `900` | 每个子代理简报的字数上限（0 = 不限） |
-| `deepsearchPtc` | `false` | 深度搜索新建的会话用 PTC 模式（`ptc` preset）；宿主没有该 preset 时回退默认模式并记诊断 |
+| `deepsearchSummaryChars` | `6000` | `deepsearch` 工具回给 agent 的正文上限；完整报告不受影响 |
+| `noTimeout` | `true` | 不限时间：Agent 搜索、深度搜索和 `deepsearch` 工具都不再设超时；卡住时只能重载插件 |
+| `deepsearchSubagents` | `4` | 深度搜索最多派几个子代理并行查（0 = 不派，自己查） |
+| `deepsearchSubagentToolCalls` | `0` | 每个子代理自己的检索/抓取工具调用上限（0 = 不限） |
+| `deepsearchBriefWords` | `0` | 每个子代理简报的字数上限（0 = 不限） |
+| `deepsearchPtc` | `true` | 深度搜索新建的会话用 PTC 模式（`ptc` preset）；宿主没有该 preset 时回退默认模式并记诊断 |
 | `deepsearchCompress` | `false` | 深度搜索会话能不能用宿主的上下文压缩工具。默认关：会话里不注册 `compress`，调研过程保持原样；打开后交给宿主的压缩策略 |
 | `methodBundled` | `true` | 使用并注入包内 `methods.md`；关闭时不注入任何调查方法。深度搜索页调查方法卡头的开关直接改这里 |
 | `deepsearchEnabled` | `true` | 普通会话是否可见 `deepsearch` 工具；关闭后这些会话的工具列表里没有它。旧 `injectSkill` 会自动迁移 |
@@ -178,7 +179,7 @@ dsh plugin remove dsh-deepsearch     # 卸载
 面板里的位置：
 
 - **Agent 搜索页**：`maxToolCalls`、`panelAgentTimeoutSec`。
-- **深度搜索页**：「深度搜索设置」卡 —— `reportDir`、轮数、思考强度、报告最大字符、并行子代理、子代理简报字数、回传摘要字数、检索调用上限、超时，然后是 PTC 模式、允许压缩上下文，最后是两个工具开关（`deepsearchEnabled`、`deepsearchWorkspaceToolEnabled`）；工作区开关打开时多一行「限制解除」`deepsearchWorkspaceUnlimited`。另有「调查方法」卡与 `referencePaths` / `referenceEnabled`。「配置」页的「左侧栏入口」（`sidebarEntry`）控制左侧栏那个常驻图标：关掉后只剩 Better Sidebar 页签，面板、历史与 `deepsearch` 工具都不受影响。
+- **深度搜索页**：「深度搜索设置」卡 —— `reportDir`、轮数、思考强度、报告最大字符、并行子代理、子代理简报字数、回传摘要字数、核对调用次数、超时，然后是 PTC 模式、允许压缩上下文，最后是两个工具开关（`deepsearchEnabled`、`deepsearchWorkspaceToolEnabled`）；工作区开关打开时多一行「限制解除」`deepsearchWorkspaceUnlimited`。另有「调查方法」卡与 `referencePaths` / `referenceEnabled`。「配置」页的「左侧栏入口」（`sidebarEntry`）控制左侧栏那个常驻图标：关掉后只剩 Better Sidebar 页签，面板、历史与 `deepsearch` 工具都不受影响。
 - **配置页**：`workspaceId`、`historyLimit`、`dataRoot`、`noTimeout`、`debug` 与诊断。
 
 数字项在配置里带 `min`/`max`，服务端按字段夹取；设置卡只提交改动过的那几个键。
