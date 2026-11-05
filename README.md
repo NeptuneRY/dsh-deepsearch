@@ -172,7 +172,7 @@ dsh plugin remove dsh-deepsearch     # 卸载
 | `deepsearchWorkspaceToolEnabled` | `false` | 深度搜索工作区里的 agent 是否也可见 `deepsearch` 工具；默认关闭，面板会话完全看不到它。打开后递归调用不可控，可能消耗大量时间与 tokens；工作区内（含子代理）的调用默认固定只跑 1 轮 |
 | `deepsearchWorkspaceUnlimited` | `false` | 解除工作区内「只跑 1 轮」的限制：打开后工作区（含子代理）的调用按请求轮数跑。只在「雷霆大搜索」打开时显示并生效；递归风险随之上升，开关旁的警告会换成解除后的版本 |
 | `referencePaths` | `''` | 深度搜索可只读的绝对文件/目录，一行一个；路径保留，是否读取由 `referenceEnabled` 决定 |
-| `referenceEnabled` | `true` | 「读本地资料」总开关；关闭后保留路径但不读 |
+| `referenceEnabled` | `false` | 「读本地资料」总开关；关闭后保留路径但不读 |
 | `deepsearchRounds` | `1` | 多轮深度搜索的默认轮数（1–10）；面板按钮 1/2/3，4 轮以上填数字 |
 | `debug` | `false` | 打开后把挂载与失败写进宿主日志 |
 
