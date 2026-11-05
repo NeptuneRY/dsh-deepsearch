@@ -262,10 +262,12 @@ assert.equal(state.version, PKG_VERSION)
 assert.equal(state.workspace, join(dataRoot, 'workspace'))
 assert.ok(Array.isArray(state.configFields) && state.configFields.some((field) => field.key === 'deepsearchSubagents'))
 assert.ok(state.configFields.some((field) => field.key === 'deepsearchBriefWords'))
+assert.ok(state.configFields.some((field) => field.key === 'deepsearchSubagentToolCalls'), 'subagent tool cap configurable')
+assert.equal(state.config.deepsearchSubagentToolCalls, 0, 'subagent tool cap is unlimited by default')
 assert.ok(!state.configFields.some((field) => field.key === 'interceptSearch'), 'shadow knobs removed')
 assert.ok(!state.configFields.some((field) => field.key === 'subagentProvider'), 'provider knob removed')
 assert.ok(state.configFields.some((field) => field.key === 'deepsearchSummaryChars'), 'summary length configurable')
-assert.equal(state.config.deepsearchSummaryChars, 4000)
+assert.equal(state.config.deepsearchSummaryChars, 6000)
 assert.ok(state.configFields.some((field) => field.key === 'reportDir'), 'report folder configurable')
 assert.ok(!state.configFields.some((field) => field.key === 'methodFile'), 'deprecated method file key removed')
 assert.ok(state.configFields.some((field) => field.key === 'referencePaths'), 'reference paths configurable')
@@ -306,7 +308,7 @@ assert.equal(restrictions.filter((item) => item.agent === 'workspace-1' && item.
 await call('POST', '/config', { values: { deepsearchWorkspaceToolEnabled: false } })
 assert.ok(restrictions.some((item) => item.agent === 'workspace-1' && item.active), 'workspace agent is masked again')
 assert.ok(state.configFields.some((field) => field.key === 'deepsearchPtc'), 'ptc switch is configurable')
-assert.equal(state.config.deepsearchPtc, false, 'ptc is off by default')
+assert.equal(state.config.deepsearchPtc, true, 'ptc is on by default')
 assert.ok(state.desktop.length > 0, 'desktop path exposed')
 assert.ok(state.attached.some((item) => item.id === 'root-1'), 'root session tracked')
 
@@ -780,5 +782,19 @@ process.on('unhandledRejection', (error) => {
   console.error('unhandled rejection escaped the plugin:', error)
   process.exit(1)
 })
+
+
+// 主 agent 的核对上限与子代理自己的上限分开配置。
+await call('POST', '/config', { values: { deepsearchSubagentToolCalls: 12 } })
+const capped = await call('POST', '/panel/deepsearch', { query: 'cap check', rounds: 1 })
+assert.equal(capped.status, 200)
+const cappedPrompt = sessionPrompts[sessionPrompts.length - 1].content[0].text
+assert.match(cappedPrompt, /每个子代理自己的检索\/抓取工具调用不超过 12 次/, 'per-subagent cap reaches the prompt')
+assert.match(cappedPrompt, /补充关键信息/, 'verification line mentions filling gaps')
+assert.equal(/硬凑/.test(cappedPrompt), false, 'duplicated source rule dropped from the prompt')
+await call('POST', '/config', { values: { deepsearchSubagentToolCalls: 0 } })
+const uncapped = await call('POST', '/panel/deepsearch', { query: 'no cap check', rounds: 1 })
+assert.equal(uncapped.status, 200)
+assert.equal(/每个子代理自己的检索/.test(sessionPrompts[sessionPrompts.length - 1].content[0].text), false, 'per-subagent cap omitted when unlimited')
 
 console.log('smoke ok')
