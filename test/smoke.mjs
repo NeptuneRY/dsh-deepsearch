@@ -346,6 +346,7 @@ await call('POST', '/config', {
   values: {
     reportDir,
     referencePaths: [join(referenceDir, 'notes.md'), join(referenceDir, 'notes2.md')].join('\n'),
+    referenceEnabled: true,
   },
 })
 const deepsearch = await call('POST', '/panel/deepsearch', { query: '前端构建工具 对比', useContext: true })
