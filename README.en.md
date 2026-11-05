@@ -169,7 +169,7 @@ The data directory defaults to `~/.dsh-deepsearch` (`%USERPROFILE%\.dsh-deepsear
 | `deepsearchWorkspaceToolEnabled` | `false` | Whether the deep-search workspace also sees `deepsearch`; off by default, and calls inside the workspace run a single round |
 | `deepsearchWorkspaceUnlimited` | `false` | Lift the one-round cap inside the workspace; shown only when the workspace tool is on |
 | `referencePaths` | `''` | Absolute files/folders deep search may read (one per line) |
-| `referenceEnabled` | `true` | Master switch for reading local references; paths are kept when off |
+| `referenceEnabled` | `false` | Master switch for reading local references; paths are kept when off |
 | `deepsearchRounds` | `1` | Default round count (1–10); the panel has 1/2/3 buttons, 4+ is typed |
 | `debug` | `false` | Write mount and failure details to the host log |
 
