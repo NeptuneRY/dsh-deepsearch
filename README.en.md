@@ -147,21 +147,22 @@ The data directory defaults to `~/.dsh-deepsearch` (`%USERPROFILE%\.dsh-deepsear
 | --- | --- | --- |
 | `workspaceId` | `''` | Workspace id for panel sessions; empty means the "Deep search" workspace |
 | `maxToolCalls` | `8` | Cap on `web_search` / `web_fetch` for panel Agent-search sessions (prompt only) |
-| `panelAgentTimeoutSec` | `180` | Panel Agent-search timeout (seconds) |
+| `panelAgentTimeoutSec` | `360` | Panel Agent-search timeout (seconds) |
 | `searchReasoningEffort` | `low` | Reasoning effort for Agent search: `off` / `low` / `high` / `max`; applied after the session is created |
-| `historyLimit` | `20` | How many history entries the panel keeps |
+| `historyLimit` | `50` | How many history entries the panel keeps |
 | `dataRoot` | `~/.dsh-deepsearch` | Where config, history and the search workspace live |
 | `sidebarEntry` | `true` | Show the Deep search entry in the host left sidebar; off leaves only the Better Sidebar tab |
 | `reportDir` | `''` | Report folder; empty means `<dataRoot>/reports`, an absolute path writes there |
-| `deepsearchTimeoutSec` | `1200` | Total timeout for one deep search (seconds) |
-| `deepsearchReasoningEffort` | `low` | Reasoning effort on the deep search page: `off` / `low` / `high` / `max` |
-| `deepsearchToolCalls` | `24` | Search/fetch tool-call budget for one deep search |
+| `deepsearchTimeoutSec` | `1800` | Total timeout for one deep search (seconds) |
+| `deepsearchReasoningEffort` | `high` | Reasoning effort on the deep search page: `off` / `low` / `high` / `max` |
+| `deepsearchToolCalls` | `24` | Tool-call cap for the main agent to verify and fill gaps after sub-agent briefs (prompt-level only); sub-agents keep their own budget |
 | `deepsearchMaxChars` | `20000` | Max characters in a report (truncated with a note beyond it) |
-| `deepsearchSummaryChars` | `4000` | Max characters the `deepsearch` tool returns to the agent; the report file is unaffected |
-| `noTimeout` | `false` | No time limits anywhere; if it stalls, only reloading the plugin helps |
-| `deepsearchSubagents` | `3` | How many sub-agents deep search may fan out (0 = none, do it all in-session) |
-| `deepsearchBriefWords` | `900` | Word cap per sub-agent brief (0 = unlimited) |
-| `deepsearchPtc` | `false` | New deep-search sessions use the `ptc` preset; falls back to the default preset with a diagnostic entry |
+| `deepsearchSummaryChars` | `6000` | Max characters the `deepsearch` tool returns to the agent; the report file is unaffected |
+| `noTimeout` | `true` | No time limits anywhere; if it stalls, only reloading the plugin helps |
+| `deepsearchSubagents` | `4` | How many sub-agents deep search may fan out (0 = none, do it all in-session) |
+| `deepsearchSubagentToolCalls` | `0` | Tool-call cap for each sub-agent (0 = unlimited) |
+| `deepsearchBriefWords` | `0` | Word cap per sub-agent brief (0 = unlimited) |
+| `deepsearchPtc` | `true` | New deep-search sessions use the `ptc` preset; falls back to the default preset with a diagnostic entry |
 | `deepsearchCompress` | `false` | Whether deep-search sessions may use the host's context compression tool. Off by default: no `compress` tool is registered, so the research trail stays intact |
 | `methodBundled` | `true` | Inject the bundled `methods.md`; off means no method notes at all |
 | `deepsearchEnabled` | `true` | Whether ordinary sessions see the `deepsearch` tool |
