@@ -99,7 +99,7 @@ dsh plugin remove dsh-deepsearch                 # 卸载
 
 > npm 上有一个同名的 `dsh-deepsearch` 占位包（0.0.1，不是本插件）。不要裸写 `dsh plugin add dsh-deepsearch`，命令必须带 `github:` 源。
 
-上面的源跟默认分支走；`pnpm` 会把解析到的 commit 写进锁文件，市场安装时也会把 commit 固定下来，发现新版本时重写这个 pin。要固定到某个发布，用 `github:NeptuneRY/dsh-deepsearch#v1.1.47`；固定 tag/commit 后市场不会自动跟新版本。
+上面的源跟默认分支走；`pnpm` 会把解析到的 commit 写进锁文件，市场安装时也会把 commit 固定下来，发现新版本时重写这个 pin。要固定到某个发布，用 `github:NeptuneRY/dsh-deepsearch#v1.1.48`；固定 tag/commit 后市场不会自动跟新版本。
 
 装完右侧栏出现「深度搜索」页签就算成功。没看到时先确认两件事：重启过宿主，装的是你现在正在用的那个 profile。
 

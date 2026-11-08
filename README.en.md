@@ -98,7 +98,7 @@ dsh plugin remove dsh-deepsearch                 # uninstall
 
 > The npm name `dsh-deepsearch` is a 0.0.1 placeholder owned by someone else. Do not run `dsh plugin add dsh-deepsearch`; the command must include the `github:` source.
 
-The source tracks the default branch; `pnpm` records the resolved commit in the lockfile and the market pins it, then rewrites the pin when a newer version appears. To pin a release, use `github:NeptuneRY/dsh-deepsearch#v1.1.47`; pinned tags/commits do not receive automatic updates.
+The source tracks the default branch; `pnpm` records the resolved commit in the lockfile and the market pins it, then rewrites the pin when a newer version appears. To pin a release, use `github:NeptuneRY/dsh-deepsearch#v1.1.48`; pinned tags/commits do not receive automatic updates.
 
 You are done when a **Deep search** tab shows up in the right sidebar. If it does not, check two things first: the host was restarted, and you installed into the profile you are actually running.
 
