@@ -107,11 +107,13 @@
 从命令行安装：
 
 ```bash
-dsh plugin add dsh-deepsearch        # 默认装到桌面 profile；别的 profile 加 --profile <name>
-dsh plugin remove dsh-deepsearch     # 卸载
+dsh plugin add github:NeptuneRY/dsh-deepsearch   # 默认装到桌面 profile；别的 profile 加 --profile <name>
+dsh plugin remove dsh-deepsearch                 # 卸载
 ```
 
-直接装 Git 仓库时把提交号钉住（`github:NeptuneRY/dsh-deepsearch#<commit>`）：不钉的话，作者下一次推送就会换掉你实际运行的代码；`pnpm` 会把解析到的 commit 写进锁文件，之后同一条 spec 不会再跟着 `main` 跑。
+> npm 上有一个同名的 `dsh-deepsearch` 占位包（0.0.1，不是本插件）。不要裸写 `dsh plugin add dsh-deepsearch`，命令必须带 `github:` 源。
+
+上面的源跟默认分支走；`pnpm` 会把解析到的 commit 写进锁文件，市场安装时也会把 commit 固定下来，发现新版本时重写这个 pin。要固定到某个发布，用 `github:NeptuneRY/dsh-deepsearch#v1.1.47`；固定 tag/commit 后市场不会自动跟新版本。
 
 装完右侧栏出现「深度搜索」页签就算成功。没看到时先确认两件事：重启过宿主，装的是你现在正在用的那个 profile。
 
@@ -175,6 +177,9 @@ dsh plugin remove dsh-deepsearch     # 卸载
 | `referenceEnabled` | `false` | 「读本地资料」总开关；关闭后保留路径但不读 |
 | `deepsearchRounds` | `1` | 多轮深度搜索的默认轮数（1–10）；面板按钮 1/2/3，4 轮以上填数字 |
 | `debug` | `false` | 打开后把挂载与失败写进宿主日志 |
+
+> **注意：PTC 模式、关闭压缩、billion-context 三者不要同时开。**
+> 深度搜索默认使用 PTC 模式，并且默认不给压缩工具。如果同时装了 billion-context，它会因为请求里带 `run_code` 而认为压缩可达，继续注入压缩提示和 nudge；但本插件又把 `compress` 工具遮掉了，模型会反复尝试压缩却调不到工具，浪费 token。遇到这种情况三选一：关闭 PTC 模式、打开「允许压缩上下文」，或不要让 billion-context 接管这个会话（目前只能全局停用它或调整其压缩设置）。
 
 面板里的位置：
 

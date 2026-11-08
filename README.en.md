@@ -106,9 +106,13 @@ From the market: open the DSH plugin market, search `dsh-deepsearch`, install, t
 From the command line:
 
 ```bash
-dsh plugin add dsh-deepsearch        # desktop profile by default; add --profile <name> for another one
-dsh plugin remove dsh-deepsearch     # uninstall
+dsh plugin add github:NeptuneRY/dsh-deepsearch   # desktop profile by default; add --profile <name> for another one
+dsh plugin remove dsh-deepsearch                 # uninstall
 ```
+
+> The npm name `dsh-deepsearch` is a 0.0.1 placeholder owned by someone else. Do not run `dsh plugin add dsh-deepsearch`; the command must include the `github:` source.
+
+The source tracks the default branch; `pnpm` records the resolved commit in the lockfile and the market pins it, then rewrites the pin when a newer version appears. To pin a release, use `github:NeptuneRY/dsh-deepsearch#v1.1.47`; pinned tags/commits do not receive automatic updates.
 
 You are done when a **Deep search** tab shows up in the right sidebar. If it does not, check two things first: the host was restarted, and you installed into the profile you are actually running.
 
@@ -172,6 +176,9 @@ The data directory defaults to `~/.dsh-deepsearch` (`%USERPROFILE%\.dsh-deepsear
 | `referenceEnabled` | `false` | Master switch for reading local references; paths are kept when off |
 | `deepsearchRounds` | `1` | Default round count (1–10); the panel has 1/2/3 buttons, 4+ is typed |
 | `debug` | `false` | Write mount and failure details to the host log |
+
+> **Heads-up: do not enable PTC mode, disabled compression, and billion-context at the same time.**
+> Deep search defaults to PTC mode and no compression tool. If billion-context is also installed, it sees `run_code` in the request and treats compression as reachable, so it keeps injecting compression prompts and nudges; this plugin, however, masks the `compress` tool, leaving the model trying to compress with no callable tool and wasting tokens. Pick one: disable PTC mode, enable "allow context compression", or keep billion-context from taking over this session (for now only a global disable or its compression settings can do that).
 
 Numeric fields carry `min`/`max` and are clamped server-side; the settings card only submits the keys you changed.
 
