@@ -56,20 +56,6 @@ It never replaces a host tool: `web_search` / `web_fetch` stay native, and the m
 | Output | one answer | one Markdown report per round, numbered in one topic folder |
 | Best for | facts, links, definitions | research that needs depth and cross-checking |
 
-### One new report per round, narrowing as it goes
-
-Topic: *"How should a DSH plugin README be written?"* — two rounds:
-
-![Round 1: laying out how three popular plugins structure their READMEs](assets/round-1.png)
-
-![Round 2: a new report built on round 1, narrowing the conclusion to "a reader model + the first 2500 characters"](assets/round-2.png)
-
-Round 1 compares three samples side by side: size, what sits above the fold, where the install section lands, how the changelog is handled.
-
-Round 2 does not redo that table and does not overwrite it: it adds a **new** report on top of the previous round, answering only what the table left open — "the first 2500 characters decide how the directory describes you" — and reorders the sections accordingly. Both reports sit in the same topic folder, numbered `01-`, `02-`; read in order, the second complements the first rather than replacing it.
-
-That is the difference from asking twice: round 2 inherits round 1's judgement and moves forward.
-
 ## Two entry points
 
 ### Panel
