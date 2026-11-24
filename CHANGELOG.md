@@ -2,6 +2,8 @@
 
 完整版本历史。面板与工具的用法见 [README.md](README.md)。
 
+- **1.2.0** — 修「子代理简报丢失」：DSH 0.2.2 起宿主改为自动投递子代理的 final answer，不再要求子代理自己 `send_message`；深搜在 `agent/pre-step` 里等子代理，挂起期间投递的简报落在宿主已取走的收件箱批次之外、随后被清掉，主会话看不到，只能 `list_agents` 空转再逐个催。现在钩子在等完后回收这批挂起消息（`inbox.remove`）并入当前步；smoke 增加「挂起消息必须进入本步」的回归探针。
+
 - **1.1.48** — 打包清理：README 中已删的两轮示例截图 `assets/round-1.png`、`assets/round-2.png` 不再随包发布，`screenshots.json` 只保留 `assets/methods.png`。无运行时代码改动。
 
 - **1.1.47** — 修安装与发布说明：中英 README 的命令行安装改为 GitHub 源，避免裸写 `dsh-deepsearch` 装到 npm 上的同名 0.0.1 占位包；Release 说明不再把 `#v1.1.47` 当唯一安装命令，主命令改浮动 GitHub 源，固定 tag/commit 时注明不会自动更新。无运行时代码改动。

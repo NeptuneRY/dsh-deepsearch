@@ -33,6 +33,8 @@ const workspaces = []
 const createdSessions = []
 const sessionPrompts = []
 const deferred = []
+let probeNextPrompt = false
+let parkedProbe = null
 
 function nativeDef(name) {
   return {
@@ -177,6 +179,10 @@ const services = {
     },
     prompt: async (request) => {
       sessionPrompts.push({ ...request })
+      if (probeNextPrompt) {
+        probeNextPrompt = false
+        parkedProbe = await probeParkedInput(request.sessionId)
+      }
       const asked = sessionPrompts.filter((item) => item.sessionId === request.sessionId).length
       const emit = handlers.get('session/event')
       if (emit) {
@@ -249,6 +255,46 @@ host.apply(fakeCtx, { dataRoot })
 // agent/created only tracks sessions now: the native web tools stay untouched.
 await handlers.get('agent/created')({ agent: rootAgent })
 await Promise.resolve()
+
+// A deepsearch run parks the parent inside `agent/pre-step`; input delivered
+// during that park (a child's closing message, a send_message reply) lands in
+// the inbox after the host claimed the step's batch. Drive the hook once and
+// prove the plugin folds that trailing batch into the step being prepared.
+async function probeParkedInput(sessionId) {
+  const preStep = handlers.get('agent/pre-step')
+  const parked = [
+    {
+      id: 'parked-1',
+      content: [{ type: 'text', text: 'Background subagent a finished. Its closing message: brief a' }],
+      source: { kind: 'subagent-settled', form: 'notice', summary: 'a finished' },
+    },
+    {
+      id: 'parked-2',
+      content: [{ type: 'text', text: 'Agent b sent a message: brief b' }],
+      source: { kind: 'agent-message', form: 'relay' },
+    },
+  ]
+  const inbox = {
+    nextStep: [...parked],
+    nextTurn: [],
+    removed: [],
+    remove(id) {
+      const index = this.nextStep.findIndex((message) => message.id === id)
+      if (index < 0) return false
+      this.nextStep.splice(index, 1)
+      this.removed.push(id)
+      return true
+    },
+  }
+  const agent = {
+    id: sessionId,
+    session: { header: { id: sessionId, origin: 'root', cwd: join(dataRoot, 'search-cwd') } },
+    ctx: { tools: { restrict: () => () => {} } },
+    inbox,
+  }
+  const decision = await preStep({ agent, step: 2 }, async () => ({ kind: 'enter', messages: [] }))
+  return { removed: [...inbox.removed], injected: (decision?.messages ?? []).map((message) => message.id) }
+}
 
 // routes
 async function call(method, path, body) {
@@ -349,6 +395,7 @@ await call('POST', '/config', {
     referenceEnabled: true,
   },
 })
+probeNextPrompt = true
 const deepsearch = await call('POST', '/panel/deepsearch', { query: '前端构建工具 对比', useContext: true })
 assert.equal(deepsearch.status, 200)
 assert.equal(deepsearch.json.entry.mode, 'deepsearch')
@@ -363,6 +410,11 @@ const reportFile = deepsearch.json.entry.reportPath
 assert.match(readFileSync(reportFile, 'utf8'), /^# 测试报告/)
 assert.equal('registered' in deepsearch.json.entry, false, 'no index registration field')
 assert.equal('committed' in deepsearch.json.entry, false, 'no git commit field')
+assert.deepEqual(parkedProbe?.removed, ['parked-1', 'parked-2'], 'trailing inbox batch is reclaimed from the parked step')
+assert.ok(
+  parkedProbe?.injected.includes('parked-1') && parkedProbe?.injected.includes('parked-2'),
+  'parked messages enter the step being prepared',
+)
 
 const badOpen = await call('POST', '/panel/open', { url: 'ftp://example.com/x' })
 assert.equal(badOpen.status, 400, 'non-http links are rejected')
